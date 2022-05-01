@@ -8,5 +8,11 @@ terraform destroy - to delete the instance
 terrafrom target name - to delete a specific configaration like vpc, s3 bucket etc.
 
 to secure Access key ID and Secret access key, we use AWS-CLI (Command Line Interface)
+apt install awscli
+aws configure
+it wil ask for Access key ID, Secret access key, region.
+
+terraform plan - used to update the state file.
+terraform destroy --target <instance name>
 
 
