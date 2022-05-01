@@ -1,3 +1,4 @@
+Add user in Im to get the Access key ID and Secret access key - while creatin user, create a group and attach policy "AdministratorAccess"
 create a directory
 create a .tf file under the directory
 terraform init - to initialize the terraform script
@@ -5,3 +6,7 @@ terraform validate - to validate whether the code written s correct
 terraform apply - to create the instance
 terraform destroy - to delete the instance
 terrafrom target name - to delete a specific configaration like vpc, s3 bucket etc.
+
+to secure Access key ID and Secret access key, we use AWS-CLI (Command Line Interface)
+
+
