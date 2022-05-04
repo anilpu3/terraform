@@ -4,7 +4,7 @@ or u can create the workspace and den u can apply the instructions of s3 bucket 
 2> if u create workspace first and pass the s3 bucket instuction later in the .tf file den you can see the workspace environment both in s3
 bucket and in the local machine.
 
-we would be doing the 2nd step.
+we would follow 2nd step.
 create a folder as "workspace"
 get inside the folder and create a .tf configuaration file (workspace.tf) 
 Creatin workspace (we wil be creatin 3 environments ie workspaces) 
