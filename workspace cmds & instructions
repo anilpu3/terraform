@@ -1,0 +1,40 @@
+we can do this creatin a s3 bucket in UI at first and we can apply the s3 bucket instruction details in the .tf file (workspace.tf)
+or u can create the workspace and den u can apply the instructions of s3 bucket into the .tf file.
+1> if u create s3 bucket first den the created workspace would be reflected inside the s3 bucket not in the local machine.
+2> if u create workspace first and pass the s3 bucket instuction later in the .tf file den you can see the workspace environment both in s3
+bucket and in the local machine.
+
+we would be doing the 2nd step.
+create a folder as "workspace"
+get inside the folder and create a .tf configuaration file (workspace.tf) 
+Creatin workspace (we wil be creatin 3 environments ie workspaces) 
+terraform workspace new dev
+terraform workspace new qa
+terraform workspace new stage
+terraform workspace list - list the created workspaces.
+
+post creatin the workspace, get inside each enivironment and apply the workspace.tf 
+terraform workspace select dev
+terraform init 
+terraform plan
+terraform apply
+then you can check whether the instance s gettin spinned up
+you can also check the state file of the dev enviroment whether the configuration details are updated.
+cat the terraform.tfstate.d
+
+terraform workspace select qa
+terraform plan
+terraform apply
+terraform workspace select stage
+terraform plan
+terraform apply
+you can use tree cmd to check the tree format of all the 3 environments.
+
+create a s3 bucket manually with the name "s3-dev-qa-stage" this is wat given in the .tf file (u can change it as per ur requirement"
+add the s3 bucket instuctions to the .tf file and run cmd terraform apply in each workspaces "dev, qa and stage"
+u can den cross check in the s3 bucket, where u see all the workspaces would be updated. 
+
+
+
+
+
