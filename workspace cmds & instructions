@@ -33,7 +33,12 @@ you can use tree cmd to check the tree format of all the 3 environments.
 create a s3 bucket manually with the name "s3-dev-qa-stage" this is wat given in the .tf file (u can change it as per ur requirement"
 add the s3 bucket instuctions to the .tf file and run cmd terraform apply in each workspaces "dev, qa and stage"
 u can den cross check in the s3 bucket, where u see all the workspaces would be updated. 
+terraform init
+terraform plan
+terraform apply
 
+
+code for s3 bucket
 terraform {
   backend "s3" {
     region  = "ap-south-1"
