@@ -4,18 +4,73 @@ https://www.terraform.io/downloads
 Add user in IAM to get the Access key ID and Secret access key - while creatin user, create a group and attach policy "AdministratorAccess"
 create a directory
 create a .tf file under the directory
-terraform init - to initialize the terraform script
+terraform init - to initialize the terraform script and down load the required dependencies from the provider
 terraform validate - to validate whether the code written s correct
-terraform apply - to create the instance
-terraform destroy - to delete the instance
-terrafrom target name - to delete a specific configaration like vpc, s3 bucket etc.
+terraform plan - 
+terraform apply - to execute the plan 
+terraform destroy - to delete the infrastructure
 
-to secure Access key ID and Secret access key, we use AWS-CLI (Command Line Interface)
+To secure Access key ID and Secret access key, we use AWS-CLI (Command Line Interface)
 apt install awscli
 aws configure
 it wil ask for Access key ID, Secret access key, region.
 
-terraform plan - used to update the state file.
+terraform fmt - used to format the code in order
 terraform destroy --target <instance name>
+terrafrom target name - to delete a specific configaration like vpc, s3 bucket etc.
+-------------------------------------------------------------------------------------------------
 
+Terraform (windows)
+- download terraform binaries for windows (AMD 64)
+- extract the data
+- open the control panel
+- select systems & security
+- click systems
+- to ur right, click on Advanced system Settings
+- click on Enviromental variables
+- select path 
+- click on edit
+- click on New, copy the extracted binary code path 
+- okay 
+-------------------------------------------------------------------------------------------------------
 
+HTTPd - this code has to be given under the ec2 instance resource block
+user_data = <<-EOF
+      #!/bin/sh
+      sudo apt-get update
+      sudo apt install -y apache2
+      sudo systemctl status apache2
+      sudo systemctl start apache2
+      sudo chown -R $USER:$USER /var/www/html
+      sudo echo "<html><body><h1>Hello this s instance 1 </h1></body></html>" > /var/www/html/index.html
+      EOF
+ ----------------------------------------------------------------------------    - ---------------------------
+ 
+ element function 
+https://www.terraform.io/language/functions/element
+
+element(list, index)
+
+Examples
+> element(["a", "b", "c"], 1)
+b
+
+> element(["a", "b", "c"], 3)
+a
+
+> element(["a", "b", "c"], length(["a", "b", "c"])-1)
+c
+
+Eg - real tym scenario
+subnet_id  =  element (["subnet-0af349aec17ba628a", "subnet-0fd2e794c653f8545"], count.index)
+ tags = {
+    Name = element(["ALB_Test_Instance_1", "ALB_Test_Instance_2"], count.index)
+  }
+  
+# Say suppose we are creatin 2 ec2 instances and need each instance to hav differnt subnet id. (
+# instead of count.index, if you giv 0, it takes 1st subnet id for both instances and if you giv 1, it takes 2nd subnet id for both the instances. 
+subnet_id  =  element (["subnet-0af349aec17ba628a", "subnet-0fd2e794c653f8545"], count.index)		- 1st case (it takes in order "subnet-0af349aec17ba628a" for 1st instance & "subnet-0fd2e794c653f8545" for 2nd instance)
+subnet_id  =  element (["subnet-0af349aec17ba628a", "subnet-0fd2e794c653f8545"], 0) 		- 2st case (it takes "subnet-0af349aec17ba628a" for both the ec2 instance)
+subnet_id  =  element (["subnet-0af349aec17ba628a", "subnet-0fd2e794c653f8545"], 1) 		- 3rd case (it takes "subnet-0fd2e794c653f8545" for both the ec2 instance)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
