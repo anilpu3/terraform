@@ -1,23 +1,9 @@
-/*# provider aws
-provider "aws" {
-	region = "us-east-1"
-}
-*/
-
-# code - creating VPC
-
-/* resource "aws_vpc" "test" {
-	cidr_block = "10.0.0.0/16"
-	tags = {
-		Name = "vpc_by_test"
-	}
-} */
-
 
 provider "aws" {
   region = "us-east-1"
 }
 
+# creatin vpc
 resource "aws_vpc" "test" {
   cidr_block =  "10.0.0.0/16"
   tags = {
@@ -25,16 +11,7 @@ resource "aws_vpc" "test" {
   }
 }
 
-# code - creating subnets (public -2, private- 1)
-
-/* resource "aws_subnet" "sub_one" {
-	vpc_id = "${aws_vpc.test.id}"
-	cidr_block = "10.0.1.0/24"
-	tags = {
-		Name = "public_subnet_1"
-	}
-} */
-
+# creating subnets (public -2 )
 
 resource "aws_subnet" "sub_one" {
   vpc_id            = aws_vpc.test.id
@@ -75,16 +52,17 @@ resource "aws_route_table" "rtb_public" {
     Name = "Public_Route_Table"
   }
 }
-
+/*
 # code - creatin private route table
 
-/*resource "aws_route_table" "rtb_private" {
+resource "aws_route_table" "rtb_private" {
 	vpc_id = "${aws_vpc.test.id}"
 	
 	tags = {
 		Name = "Private_Route_Table"
 	}
-} */
+}
+*/
 
 # code - attaching public subnets to public route table
 
@@ -98,12 +76,14 @@ resource "aws_route_table_association" "rta_subnet_public_2" {
   route_table_id = aws_route_table.rtb_public.id
 }
 
+/*
 # code - attaching private subnets to private route table
 
-/*resource "aws_route_table_association" "rta_subnet_private" {
+resource "aws_route_table_association" "rta_subnet_private" {
 	subnet_id = "${aws_subnet.sub_three.id}"
 	route_table_id = "${aws_route_table.rtb_private.id}"
-}*/
+}
+*/
 
 # code - create security group
 
@@ -144,6 +124,8 @@ resource "aws_security_group" "sg_test" {
   }
 
 }
+
+# creatin 2 instances
 
 resource "aws_instance" "alb_instance_1" {
   ami                         = "ami-08d4ac5b634553e16"
@@ -189,7 +171,7 @@ tags = {
 
 }
 
-#------------------------------------------------------------------------------------------------------------------------
+# creatin alb
 resource "aws_lb" "my-test-lb" {
   name               = "my-test-lb"
   internal           = false
@@ -201,6 +183,7 @@ resource "aws_lb" "my-test-lb" {
 
 }
 
+# creatin target group and attachin the target group to the instances
 resource "aws_lb_target_group" "my-alb-tg" {
   health_check {
     interval            = 30
@@ -231,6 +214,7 @@ resource "aws_lb_target_group_attachment" "my-tg-attachment2" {
   port             = 80
 }
 
+# creatin listners
 resource "aws_lb_listener" "my-test-alb-listner" {
   load_balancer_arn = "${aws_lb.my-test-lb.arn}"
   port              = 80
