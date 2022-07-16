@@ -98,7 +98,8 @@ resource "aws_instance" "myec2" {
    instance_type = "t2.micro"
 }
 
-# to pass the lockfile use
+# to pass the lockfile use (.terraform.lock.hcl)
 # terraform init -upgrade
+# once the cmd s run the lockfile would be updated with the latest version.
 
 ---------------------------------------------------------------------------------------------
