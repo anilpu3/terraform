@@ -29,6 +29,8 @@ Eg 2 -
 min(5, 12, 9)
 5
 -------------------------------------------------------------------------------------------------
+https://github.com/zealvora/terraform-beginner-to-advanced-resource
+---------------------------------------------------------------------------------------------------
 
 Terraform (windows)
 - download terraform binaries for windows (AMD 64)
