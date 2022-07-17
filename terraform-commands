@@ -111,3 +111,12 @@ resource "aws_instance" "myec2" {
 # once the cmd s run the lockfile would be updated with the latest version.
 
 ---------------------------------------------------------------------------------------------
+Note - Filters in Data Sources
+If you need to find more details related to options that can be used in filters, you can refer to the following AWS documentation:
+
+https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html
+
+Refer to the --filters option
+
+Note: This additional details is beyond the scope of certification.
+====------------------------------------------------------------------------------------------------------------
