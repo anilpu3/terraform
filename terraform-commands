@@ -119,6 +119,8 @@ If you need to find more details related to options that can be used in filters,
 https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html
 
 Refer to the --filters option
-
 Note: This additional details is beyond the scope of certification.
 ====------------------------------------------------------------------------------------------------------------
+Savings Terraform Plan To File
+terraform plan -out=demopath (demopath s jus a file name, path and file name can be different dependin on the user)
+terraform apply demopath
