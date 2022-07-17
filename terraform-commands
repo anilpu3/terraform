@@ -19,7 +19,15 @@ terraform fmt - used to format the code in order
 terraform destroy -target <resource_name.local_resource_name>
 eg terraform destroy -target aws_instance.myec2
 terrafrom target name - to delete a specific configaration like vpc, s3 bucket etc.
-
+-----------------------------------------------------------------------------------------------------------
+terrafrom console - used to check the terraform functions post which can be used in the configuration file.
+https://www.terraform.io/language/functions
+Eg 1 - 
+max(5, 12, 9)
+12
+Eg 2 - 
+min(5, 12, 9)
+5
 -------------------------------------------------------------------------------------------------
 
 Terraform (windows)
