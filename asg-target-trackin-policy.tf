@@ -22,7 +22,7 @@ resource "aws_autoscaling_group" "asg-test" {
 resource "aws_launch_template" "template" {
   name          = "asg-launch-template"
   instance_type = "t2.micro"
-  image_id      = data.aws_ami.ami.id
+  image_id      = "ami-08d4ac5b634553e16"
   # ebs_optimized          = true
   vpc_security_group_ids = [aws_security_group.asg-sg-ec2.id]
 }
@@ -39,7 +39,7 @@ resource "aws_autoscaling_policy" "target_trackin_policy" {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
 
-    target_value = "60"
+    target_value = "20"
 
   }
 }
@@ -80,6 +80,7 @@ resource "aws_security_group" "asg-sg-ec2" {
   }
 }
 #-------------------------------------------------------------------
+/* 
 # data source for ami
 data "aws_ami" "ami" {
   most_recent = true
@@ -90,4 +91,6 @@ data "aws_ami" "ami" {
     values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
   }
 }
+
 #---------------------------------------------------------------------
+*/
