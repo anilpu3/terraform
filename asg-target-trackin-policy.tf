@@ -11,20 +11,32 @@ resource "aws_autoscaling_group" "asg-test" {
   min_size             = 1
   max_size             = 3
   termination_policies = ["OldestInstance"]
-  vpc_zone_identifier  = ["subnet-058f2142c9c7458f5","subnet-0af349aec17ba628a"]
+  vpc_zone_identifier  = ["subnet-058f2142c9c7458f5", "subnet-0af349aec17ba628a"]
   launch_template {
     id      = aws_launch_template.template.id
     version = "$Latest"
   }
 }
 #----------------------------------------------------------------
-# creating launch template for auto scalin
+#creating launch template for auto scalin
 resource "aws_launch_template" "template" {
   name          = "asg-launch-template"
   instance_type = "t2.micro"
   image_id      = "ami-08d4ac5b634553e16"
   # ebs_optimized          = true
+  # vpc_security_group_ids = ["sg-00390ded4944d0c33"]
   vpc_security_group_ids = [aws_security_group.asg-sg-ec2.id]
+  user_data              = base64encode(data.template_file.test.rendered) # not recommended, only for testin purpose
+}
+#-------------------------------------------------------------------------------------------------------------------------------
+# data source for user-data to pass stress for testin
+data "template_file" "test" {
+  template = <<-EOF
+      #!/bin/sh
+      sudo apt-get update
+      sudo apt install stress
+      sudo stress --cpu 10 --timeout 200
+      EOF
 }
 #----------------------------------------------------------------
 # creating autoscalin policy "target-trackin-policy"
@@ -79,8 +91,24 @@ resource "aws_security_group" "asg-sg-ec2" {
     Name = "asg-security-group"
   }
 }
+
+  
+
+
+
+
+
+
+/*
+
+resource "aws_launch_template" "template" {
+  name          = "asg-launch-template"
+  instance_type = "t2.micro"
+  image_id      = data.aws_ami.ami.id
+  # ebs_optimized          = true
+  vpc_security_group_ids = [aws_security_group.asg-sg-ec2.id]
+}
 #-------------------------------------------------------------------
-/* 
 # data source for ami
 data "aws_ami" "ami" {
   most_recent = true
@@ -91,6 +119,5 @@ data "aws_ami" "ami" {
     values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
   }
 }
-
 #---------------------------------------------------------------------
 */
