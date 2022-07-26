@@ -24,6 +24,77 @@ resource "aws_launch_template" "template" {
   instance_type = "t2.micro"
   image_id      = "ami-08d4ac5b634553e16"
   # ebs_optimized          = true
+  vpc_security_group_ids = ["sg-00390ded4944d0c33"]
+  # vpc_security_group_ids = [aws_security_group.asg-sg-ec2.id]
+  user_data = base64encode(data.template_file.test.rendered) # not recommended, only for testin purpose
+}
+#-------------------------------------------------------------------------------------------------------------------------------
+# data source for user-data to pass stress for testin
+data "template_file" "test" {
+  template = <<-EOF
+      #!/bin/sh
+      sudo apt-get update
+      sudo apt install stress
+      sudo stress --cpu 10 --timeout 200
+      EOF
+}
+#----------------------------------------------------------------
+# creating autoscalin policy "target-trackin-policy"
+resource "aws_autoscaling_policy" "target_trackin_policy" {
+  name                      = "asg-target-trackin-policy"
+  policy_type               = "TargetTrackingScaling"
+  autoscaling_group_name    = aws_autoscaling_group.asg-test.name
+  estimated_instance_warmup = 0
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+
+    target_value = "15"
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+#----------------------------------------------------------------
+# provider
+provider "aws" {
+  region = "us-east-1"
+}
+#----------------------------------------------------------------
+# creating autoscalin group
+resource "aws_autoscaling_group" "asg-test" {
+  # name                 = "asg-test"
+  desired_capacity     = 1
+  min_size             = 1
+  max_size             = 3
+  termination_policies = ["OldestInstance"]
+  vpc_zone_identifier  = ["subnet-058f2142c9c7458f5", "subnet-0af349aec17ba628a"]
+  launch_template {
+    id      = aws_launch_template.template.id
+    version = "$Latest"
+  }
+}
+#----------------------------------------------------------------
+#creating launch template for auto scalin
+resource "aws_launch_template" "template" {
+  name          = "asg-launch-template"
+  instance_type = "t2.micro"
+  image_id      = "ami-08d4ac5b634553e16"
+  # ebs_optimized          = true
   # vpc_security_group_ids = ["sg-00390ded4944d0c33"]
   vpc_security_group_ids = [aws_security_group.asg-sg-ec2.id]
   user_data              = base64encode(data.template_file.test.rendered) # not recommended, only for testin purpose
@@ -99,7 +170,7 @@ resource "aws_security_group" "asg-sg-ec2" {
 
 
 
-/*
+
 
 resource "aws_launch_template" "template" {
   name          = "asg-launch-template"
