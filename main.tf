@@ -107,7 +107,7 @@ resource "aws_instance" "alb_instances" {
       sudo systemctl status apache2
       sudo systemctl start apache2
       sudo chown -R $USER:$USER /var/www/html
-      sudo echo "<html><body><h1> Hello from $(hostname -f) in Availability Zone $EC2_AVAIL_ZONE </h1></body></html>" > /var/www/html/index.html
+      sudo echo "<html><body><h1> Hello from Instance $(hostname -f) </h1></body></html>" > /var/www/html/index.html
 EOF
 
   tags = {
