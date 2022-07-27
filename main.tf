@@ -23,7 +23,7 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 #-------------------------------------------------------------------------------------------------------------------
-# code - creating IG and attaching it to VPC
+# creatin IG and attaching it to VPC
 
 resource "aws_internet_gateway" "test-ig" {
   vpc_id = aws_vpc.test.id
@@ -32,7 +32,7 @@ resource "aws_internet_gateway" "test-ig" {
   }
 }
 # -------------------------------------------------------------------------------------------------------------------
-# code - creatin public route table and attach the Internet gateway
+# creatin public route table and attach the Internet gateway
 
 resource "aws_route_table" "rtb_public" {
   vpc_id = aws_vpc.test.id
@@ -45,7 +45,7 @@ resource "aws_route_table" "rtb_public" {
   }
 }
 #-----------------------------------------------------------------------------------------------------------------------
-# code - attaching public subnets to public route table
+# attachin public subnets to public route table
 
 resource "aws_route_table_association" "rta_subnet_public" {
   subnet_id      = element(aws_subnet.public_subnets.*.id, count.index)
@@ -53,7 +53,7 @@ resource "aws_route_table_association" "rta_subnet_public" {
   route_table_id = aws_route_table.rtb_public.id
 }
 #--------------------------------------------------------------------------------------------------------------------
-# code - create security group
+# creatin security group
 
 resource "aws_security_group" "sg_test" {
   # name = "newvpc"
@@ -93,6 +93,8 @@ resource "aws_security_group" "sg_test" {
 
 }
 #-----------------------------------------------------------------------------------------------------------------
+# creatin instances
+
 resource "aws_instance" "alb_instances" {
   ami                         = "ami-08d4ac5b634553e16"
   instance_type               = "t2.micro"
@@ -116,6 +118,8 @@ EOF
 }
 
 #------------------------------------------------------------------------------------------------------------------------
+# creatin alb
+
 resource "aws_lb" "my-test-lb" {
   name               = "my-test-lb"
   internal           = false
@@ -127,6 +131,8 @@ resource "aws_lb" "my-test-lb" {
 
 }
 #-------------------------------------------------------------------------------------------------------------------------
+# creatin target group, health check and attachin the instances to target group
+
 resource "aws_lb_target_group" "my-alb-tg" {
   health_check {
     interval            = 30
@@ -151,7 +157,9 @@ resource "aws_lb_target_group_attachment" "my-tg-attachments" {
   count            = "2"
   port             = 80
 }
-#--------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------
+# creatin listener
+
 resource "aws_lb_listener" "my-test-alb-listner" {
   load_balancer_arn = aws_lb.my-test-lb.arn
   port              = 80
