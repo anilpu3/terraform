@@ -16,14 +16,14 @@ resource "aws_vpc" "test" {
 resource "aws_subnet" "public_subnets" {
   vpc_id            = aws_vpc.test.id
   cidr_block        = element(["10.0.1.0/24", "10.0.2.0/24"], count.index)
-  availability_zone = element(["us-east-1a", "us-east-1b"], count.index)
+  availability_zone = element(["us-east-1a", "us-east-1b"], count.index) # different availability zone
   count             = "2"
   tags = {
     Name = element(["public_subnet_1", "public_subnet_2"], count.index)
   }
 }
 #-------------------------------------------------------------------------------------------------------------------
-# creatin IG and attaching it to VPC
+# creatin IG and attachin it to VPC
 
 resource "aws_internet_gateway" "test-ig" {
   vpc_id = aws_vpc.test.id
@@ -32,7 +32,7 @@ resource "aws_internet_gateway" "test-ig" {
   }
 }
 # -------------------------------------------------------------------------------------------------------------------
-# creatin public route table and attach the Internet gateway
+# creatin public route table and attachin the Internet gateway
 
 resource "aws_route_table" "rtb_public" {
   vpc_id = aws_vpc.test.id
@@ -56,7 +56,6 @@ resource "aws_route_table_association" "rta_subnet_public" {
 # creatin security group
 
 resource "aws_security_group" "sg_test" {
-  # name = "newvpc"
   vpc_id = aws_vpc.test.id
 
   ingress {
@@ -150,7 +149,7 @@ resource "aws_lb_target_group" "my-alb-tg" {
   vpc_id      = aws_vpc.test.id
   target_type = "instance"
 }
-#----------------------------------------------------------------------------------------------------
+
 resource "aws_lb_target_group_attachment" "my-tg-attachments" {
   target_group_arn = aws_lb_target_group.my-alb-tg.arn
   target_id        = element(aws_instance.alb_instances.*.id, count.index)
