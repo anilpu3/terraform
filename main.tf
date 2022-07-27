@@ -1,16 +1,17 @@
-
+#------------------------------------------------------------------------------------------------------------------
+# provider
 provider "aws" {
   region = "us-east-1"
 }
-
+#------------------------------------------------------------------------------------------------------------------
+# creatin VPC
 resource "aws_vpc" "test" {
   cidr_block = "10.0.0.0/16"
   tags = {
     Name = "vpc_by_test"
   }
 }
-
-
+#---------------------------------------------------------------------------------------------------------------------
 # creatin subnets (2 public)
 resource "aws_subnet" "public_subnets" {
   vpc_id            = aws_vpc.test.id
@@ -21,18 +22,7 @@ resource "aws_subnet" "public_subnets" {
     Name = element(["public_subnet_1", "public_subnet_2"], count.index)
   }
 }
-/*
-resource "aws_subnet" "sub_two" {
-  vpc_id            = aws_vpc.test.id
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
-  tags = {
-    Name = "public_subnet_2"
-  }
-}
-*/
-
-
+#-------------------------------------------------------------------------------------------------------------------
 # code - creating IG and attaching it to VPC
 
 resource "aws_internet_gateway" "test-ig" {
@@ -41,7 +31,7 @@ resource "aws_internet_gateway" "test-ig" {
     Name = "Internet Gateway"
   }
 }
-
+# -------------------------------------------------------------------------------------------------------------------
 # code - creatin public route table and attach the Internet gateway
 
 resource "aws_route_table" "rtb_public" {
@@ -54,17 +44,7 @@ resource "aws_route_table" "rtb_public" {
     Name = "Public_Route_Table"
   }
 }
-
-# code - creatin private route table
-
-/*resource "aws_route_table" "rtb_private" {
-	vpc_id = "${aws_vpc.test.id}"
-	
-	tags = {
-		Name = "Private_Route_Table"
-	}
-} */
-
+#-----------------------------------------------------------------------------------------------------------------------
 # code - attaching public subnets to public route table
 
 resource "aws_route_table_association" "rta_subnet_public" {
@@ -72,21 +52,7 @@ resource "aws_route_table_association" "rta_subnet_public" {
   count          = "2"
   route_table_id = aws_route_table.rtb_public.id
 }
-
-/*
-resource "aws_route_table_association" "rta_subnet_public_2" {
-  subnet_id      = aws_subnet.sub_two.id
-  route_table_id = aws_route_table.rtb_public.id
-}
-*/
-
-# code - attaching private subnets to private route table
-
-/*resource "aws_route_table_association" "rta_subnet_private" {
-	subnet_id = "${aws_subnet.sub_three.id}"
-	route_table_id = "${aws_route_table.rtb_private.id}"
-}*/
-
+#--------------------------------------------------------------------------------------------------------------------
 # code - create security group
 
 resource "aws_security_group" "sg_test" {
@@ -126,7 +92,7 @@ resource "aws_security_group" "sg_test" {
   }
 
 }
-
+#-----------------------------------------------------------------------------------------------------------------
 resource "aws_instance" "alb_instances" {
   ami                         = "ami-08d4ac5b634553e16"
   instance_type               = "t2.micro"
@@ -141,36 +107,14 @@ resource "aws_instance" "alb_instances" {
       sudo systemctl status apache2
       sudo systemctl start apache2
       sudo chown -R $USER:$USER /var/www/html
-      sudo echo "<html><body><h1>Hello this s Instance_1 </h1></body></html>" > /var/www/html/index.html
+      sudo echo "<html><body><h1> Hello from $(hostname -f) in Availability Zone $EC2_AVAIL_ZONE </h1></body></html>" > /var/www/html/index.html
 EOF
 
   tags = {
     Name = element(["ALB_Instance_1", "ALB_Instance_2"], count.index)
   }
 }
-/*
-resource "aws_instance" "alb_instance_2" {
-  ami                         = "ami-08d4ac5b634553e16"
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.sub_two.id
-  associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.sg_test.id]
-  user_data = <<-EOF
-      #!/bin/sh
-      sudo apt-get update
-      sudo apt install -y apache2
-      sudo systemctl status apache2
-      sudo systemctl start apache2
-      sudo chown -R $USER:$USER /var/www/html
-      sudo echo "<html><body><h1>Hello this sI nstance_2 </h1></body></html>" > /var/www/html/index.html
-EOF
 
-tags = {
-    Name = "ALB_Test_Instance_2"
-}
-
-}
-*/
 #------------------------------------------------------------------------------------------------------------------------
 resource "aws_lb" "my-test-lb" {
   name               = "my-test-lb"
@@ -182,7 +126,7 @@ resource "aws_lb" "my-test-lb" {
   enable_deletion_protection = false
 
 }
-
+#-------------------------------------------------------------------------------------------------------------------------
 resource "aws_lb_target_group" "my-alb-tg" {
   health_check {
     interval            = 30
@@ -200,20 +144,14 @@ resource "aws_lb_target_group" "my-alb-tg" {
   vpc_id      = aws_vpc.test.id
   target_type = "instance"
 }
-
+#----------------------------------------------------------------------------------------------------
 resource "aws_lb_target_group_attachment" "my-tg-attachments" {
   target_group_arn = aws_lb_target_group.my-alb-tg.arn
   target_id        = element(aws_instance.alb_instances.*.id, count.index)
   count            = "2"
   port             = 80
 }
-/*
-resource "aws_lb_target_group_attachment" "my-tg-attachment2" {
-  target_group_arn = aws_lb_target_group.my-alb-tg.arn
-  target_id        = aws_instance.alb_instance_2.id
-  port             = 80
-}
-*/
+#--------------------------------------------------------------------------------------------------
 resource "aws_lb_listener" "my-test-alb-listner" {
   load_balancer_arn = aws_lb.my-test-lb.arn
   port              = 80
@@ -224,3 +162,4 @@ resource "aws_lb_listener" "my-test-alb-listner" {
     target_group_arn = aws_lb_target_group.my-alb-tg.arn
   }
 }
+#------------------------------------------------------------------------------------------------------
