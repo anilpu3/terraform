@@ -11,7 +11,7 @@ resource "aws_vpc" "test" {
   }
 }
 
-# creating subnets (public -2 )
+# creatin subnets (public -2 )
 
 resource "aws_subnet" "sub_one" {
   vpc_id            = aws_vpc.test.id
@@ -31,7 +31,7 @@ resource "aws_subnet" "sub_two" {
   }
 }
 
-# code - creating IG and attaching it to VPC
+# creatin IG and attaching it to VPC
 
 resource "aws_internet_gateway" "test-ig" {
   vpc_id = aws_vpc.test.id
@@ -40,7 +40,7 @@ resource "aws_internet_gateway" "test-ig" {
   }
 }
 
-# code - creatin public route table and attach the Internet gateway
+# creatin public route table and attach the Internet gateway
 
 resource "aws_route_table" "rtb_public" {
   vpc_id = aws_vpc.test.id
@@ -53,7 +53,7 @@ resource "aws_route_table" "rtb_public" {
   }
 }
 /*
-# code - creatin private route table
+# creatin private route table
 
 resource "aws_route_table" "rtb_private" {
 	vpc_id = "${aws_vpc.test.id}"
@@ -64,7 +64,7 @@ resource "aws_route_table" "rtb_private" {
 }
 */
 
-# code - attaching public subnets to public route table
+# attachin public subnets to public route table
 
 resource "aws_route_table_association" "rta_subnet_public_1" {
   subnet_id      = aws_subnet.sub_one.id
@@ -77,7 +77,7 @@ resource "aws_route_table_association" "rta_subnet_public_2" {
 }
 
 /*
-# code - attaching private subnets to private route table
+# attachin private subnets to private route table
 
 resource "aws_route_table_association" "rta_subnet_private" {
 	subnet_id = "${aws_subnet.sub_three.id}"
@@ -85,7 +85,7 @@ resource "aws_route_table_association" "rta_subnet_private" {
 }
 */
 
-# code - create security group
+# creatin security group
 
 resource "aws_security_group" "sg_test" {
   # name = "newvpc"
