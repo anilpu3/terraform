@@ -162,7 +162,7 @@ resource "aws_instance" "alb_instance_2" {
       sudo systemctl status apache2
       sudo systemctl start apache2
       sudo chown -R $USER:$USER /var/www/html
-      sudo echo "<html><body><h1>Hello this sI nstance_2 </h1></body></html>" > /var/www/html/index.html
+      sudo echo "<html><body><h1>Hello this s Instance_2 </h1></body></html>" > /var/www/html/index.html
 EOF
 
 tags = {
