@@ -2,7 +2,7 @@
 # create ssh keys in the default directory or in the user specified directory (path)
 # usin below command 
 # ssh-keygen (defualt path)
-# ssh-keygen -f /home/anil/ssh-key (custom path & name) - user can define his own path and name.
+# ssh-keygen -f /home/anil/ssh-key (custom path & name) - user can define required path and name.
 # the command would generate two files public key(.pub) and private key in the directory.
 # id_rsa and id_rsa.pub (default)
 # ssh-key and ssh-key.pub (custom files)
