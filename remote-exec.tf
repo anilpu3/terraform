@@ -14,7 +14,7 @@ resource "aws_instance" "myec2" {
    connection {
    type     = "ssh"
    user     = "root"
-   private_key = file("./door-key.pem")
+   private_key = file("./a/terraform/door-key.pem")
    host     = self.public_ip     # public ip of the newly created instance.         
     }
 
