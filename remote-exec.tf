@@ -12,7 +12,7 @@ resource "aws_instance" "remote-exec-instance" {
    key_name = "door-key"
   
   tags = {
-    Name = "SSH-Instance"
+    Name = "remote-exec"
   }
 
 
