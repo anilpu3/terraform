@@ -26,7 +26,7 @@ resource "aws_instance" "remote-exec-instance" {
 
  provisioner "remote-exec" {
    inline = [
-      "sudo apt-get update"
+      "sudo apt-get update",
       "sudo apt install -y apache2",
       "sudo apt install git"
       
