@@ -18,7 +18,7 @@ resource "aws_instance" "remote-exec-instance" {
 
    connection {
    type     = "ssh"
-   user     = "root"
+   user     = "ubuntu"
    private_key = file("F:/a/terraform/door-key.pem")
    #private_key = file("./door-key.pem")
    host     = self.public_ip     # public ip of the newly created instance.         
