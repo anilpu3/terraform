@@ -37,7 +37,7 @@ provisioner "local-exec" {                           #optional
 command = "echo aws_instance.local-exec-instance.private.ip > private-ips.txt" 
 }
 
-provisioner "local-exec" { # git installation on target machine usin ansible playbook
+provisioner "local-exec" { # git installation on target host machine usin ansible playbook
     command = "ansible-playbook  -i ${aws_instance.local-exec-instance.private_ip}, --private-key ${"./door-key.pem"} git-install.yml"
   }
 
