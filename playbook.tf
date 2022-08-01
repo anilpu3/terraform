@@ -44,3 +44,8 @@ provisioner "local-exec" { # git installation on target machine usin ansible pla
 }
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/*
+  By default, the user Ansible connects to remote servers as will be the same name as the user ansible runs as.
+  it will try to connect to remote servers with whatever user started name with. You can override this by specifying the remote_user in a playbook or globally in the ansible.cfg file.
+  */
