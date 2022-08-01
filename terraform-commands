@@ -131,4 +131,6 @@ terraform plan -out=demopath (demopath s jus a file name, path and file name can
 terraform apply demopath
 ===========================================================================================================================
 depends_on = [ aws_instance.web ]
+on_failure = continue
+when    = destroy
 ============================================================================
