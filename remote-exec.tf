@@ -33,6 +33,34 @@ resource "aws_instance" "remote-exec-instance" {
 }
 #-------------------------------------------------------------------------------------------------------------------------
 
+/*
+  resource "null_resource" "null" {
+  
+   connection {
+   type     = "ssh"
+   user     = "ubuntu"
+   private_key = file("F:/a/terraform/door-key.pem")
+   #private_key = file("./door-key.pem")
+   host     = self.public_ip     # public ip of the newly created instance.         
+    }
+
+ 
+  provisioner "file" {
+    source      = "httpd.sh"
+    destination = "/tmp/httpd.sh"
+  }
+  
+   provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/httpd.sh",
+      "sh /tmp/httpd.sh",
+    ]
+  }
+  
+  depends_on = [ aws_instance.remote-exec-instance ]
+  
+  }
+*/
 
 
 
