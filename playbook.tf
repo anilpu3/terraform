@@ -25,7 +25,7 @@ resource "aws_instance" "local-exec-instance" {
 provisioner "remote-exec" {
    inline = [
      "echo 'establishin ssh connection'",
-     "sudo apt-get update"                           # optional, can be configured in ansible playbook
+     "sudo apt-get update"                           # optional, can also be configured in ansible playbook
         ]
  }
 
@@ -51,7 +51,7 @@ provisioner "local-exec" { # git installation on target machine usin ansible pla
 ------------------------------------------------------------------------------------  -
   ---
 - hosts: all
-  remote_user: ubuntu                   # can be configured in playbook
+  remote_user: ubuntu                   # configured in playbook
   tasks:
     - name: install pakage
       apt:
@@ -62,7 +62,7 @@ provisioner "local-exec" { # git installation on target machine usin ansible pla
 [defaults]
 inventory = ./inventory
 deprecation_warnings = False
-remote_user = ubuntu                   # can be configured in ansible.cfg file (configuration file - can be used to do lot more than this)
+remote_user = ubuntu                   # configured in ansible.cfg file (configuration file - can be used to do lot more than this)
 host_key_checking = False
 private_key_file = ./door-key.pem
 
