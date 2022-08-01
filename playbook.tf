@@ -30,7 +30,7 @@ provisioner "remote-exec" {
  }
 
 provisioner "local-exec" {
-command = "sleep 60"                                 # optional
+command = "sleep 60"                                 # optional - used to wait 60sec to perform next cmd 
 }
 
 provisioner "local-exec" {                           #optional
@@ -44,8 +44,34 @@ provisioner "local-exec" { # git installation on target machine usin ansible pla
 }
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 /*
-  By default, the user Ansible connects to remote servers as will be the same name as the user ansible runs as.
-  it will try to connect to remote servers with whatever user started name with. You can override this by specifying the remote_user in a playbook or globally in the ansible.cfg file.
-  */
+  By default, the user ansible connects to remote servers as the same name as the user ansible runs as.
+  it will try to connect to remote servers with whatever user started name with. You can override this by specifyin
+  the remote_user in a playbook or globally in the ansible.cfg file.
+------------------------------------------------------------------------------------  -
+  ---
+- hosts: all
+  remote_user: ubuntu                   # can be configured in playbook
+  tasks:
+    - name: install pakage
+      apt:
+        name: git
+        state: latest
+      become: yes
+-----------------------------------------------------------------------------------------  
+[defaults]
+inventory = ./inventory
+deprecation_warnings = False
+remote_user = ubuntu                   # can be configured in ansible.cfg file (configuration file - can be used to do lot more than this)
+host_key_checking = False
+private_key_file = ./door-key.pem
+
+[privilege_escalation]
+become = true
+become_method = sudo
+become_user = root
+become_ask_pass = False
+*/
+  
+
+
