@@ -52,7 +52,7 @@ resource "aws_default_vpc" "ssh-default-vpc" {
 }
 resource "aws_security_group" "ssh-sg-ec2" {
   name        = "ssh-security_group"
-  description = "security_group for autoscalin"
+  description = "security_group for ssh connection"
   vpc_id      = aws_default_vpc.ssh-default-vpc.id
   ingress {
     from_port   = 22
@@ -119,7 +119,7 @@ resource "aws_default_vpc" "ssh-default-vpc" {
 }
 resource "aws_security_group" "ssh-sg-ec2" {
   name        = "ssh-security_group"
-  description = "security_group for autoscalin"
+  description = "security_group for ssh connection"
   vpc_id      = aws_default_vpc.ssh-default-vpc.id
   ingress {
     from_port   = 22
