@@ -1,0 +1,13 @@
+---
+- hosts: all
+  remote_user: ubuntu 
+  tasks:
+    - name: install pakage
+      apt:
+        name: git
+        state: latest
+      become: yes
+      
+      
+      
+      
