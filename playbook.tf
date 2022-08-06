@@ -30,7 +30,7 @@ provisioner "remote-exec" {
  }
 
 provisioner "local-exec" {
-command = "sleep 60"                                 # optional - used to wait 60sec to perform next cmd 
+command = "sleep 30"                                 # optional - used to wait 30sec to perform next cmd 
 }
 
 provisioner "local-exec" {                           #optional
@@ -38,7 +38,7 @@ command = "echo aws_instance.local-exec-instance.private.ip > private-ips.txt"
 }
 
 provisioner "local-exec" { # git installation on target host machine usin ansible playbook
-    command = "ansible-playbook  -i ${aws_instance.local-exec-instance.private_ip}, --private-key ${"./door-key.pem"} git-install.yml"
+    command = "ansible-playbook -i ${aws_instance.local-exec-instance.private_ip}, --private-key ${"./door-key.pem"} git-install.yml"
   }
 
 }
@@ -49,6 +49,7 @@ provisioner "local-exec" { # git installation on target host machine usin ansibl
   it will try to connect to remote servers with whatever user started name with. You can override this by specifyin
   the remote_user in a playbook or globally in the ansible.cfg file.
 ------------------------------------------------------------------------------------  -
+  cat <<EOF > /root/ansible/git-install.yml
   ---
 - hosts: all
   remote_user: ubuntu                   # configured in playbook
@@ -58,7 +59,9 @@ provisioner "local-exec" { # git installation on target host machine usin ansibl
         name: git
         state: latest
       become: yes
+EOF
 -----------------------------------------------------------------------------------------  
+cat <<EOF > /root/ansible/ansible.cfg
 [defaults]
 inventory = ./inventory
 deprecation_warnings = False
@@ -71,6 +74,7 @@ become = true
 become_method = sudo
 become_user = root
 become_ask_pass = False
+EOF
 */
   
 
