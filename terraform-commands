@@ -123,6 +123,15 @@ resource "aws_instance" "myec2" {
 # once the cmd s run the lockfile would be updated with the latest version.
 
 ---------------------------------------------------------------------------------------------
+Savings Terraform Plan To File
+terraform plan -out=demopath (demopath s jus a file name, path and file name can be different dependin on the user)
+terraform apply demopath
+===========================================================================================================================
+Provisioner types
+depends_on = [ aws_instance.web ]
+on_failure = continue
+when    = destroy
+============================================================================
 Note - Filters in Data Sources
 If you need to find more details related to options that can be used in filters, you can refer to the following AWS documentation:
 
@@ -130,15 +139,6 @@ https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instances.html
 
 Refer to the --filters option
 Note: This additional details is beyond the scope of certification.
-====------------------------------------------------------------------------------------------------------------
-Savings Terraform Plan To File
-terraform plan -out=demopath (demopath s jus a file name, path and file name can be different dependin on the user)
-terraform apply demopath
-===========================================================================================================================
-depends_on = [ aws_instance.web ]
-on_failure = continue
-when    = destroy
-============================================================================
 data "aws_ami" "amazon_linux" {
   most_recent = true
 
@@ -158,3 +158,38 @@ data "aws_ami" "amazon_linux" {
   }
   owners = ["amazon", "self"]
 }
+=================================================================================
+Playbook - nginx
+---
+- name: Install Nginx
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+
+  roles:
+  - nginx
+  ================================================================================
+  locals {
+  vpc_id           = "vpc-0548d408bf3549ca0"
+  subnet_id        = "subnet-060a1ae52cf0a73d6"
+  ssh_user         = "ubuntu"
+  key_name         = "devops"
+  private_key_path = "~/Downloads/devops.pem"
+}
+=================================================================================
+ansible.cfg
+[defaults]
+inventory = ./inventory
+deprecation_warnings = False
+remote_user = ec2-user
+host_key_checking = False
+private_key_file = ./aws-exam-testing.pem
+
+[privilege_escalation]
+become = true
+become_method = sudo
+become_user = root
+become_ask_pass = False
+=================================================================================
+
+  
