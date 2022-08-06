@@ -191,5 +191,7 @@ become_method = sudo
 become_user = root
 become_ask_pass = False
 =================================================================================
-
+route 53 -dig s the cmd
+dig myapp.domain.com 
+dig domain.com
   
