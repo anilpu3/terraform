@@ -199,4 +199,10 @@ become_ask_pass = False
 route 53 -dig s the cmd
 dig myapp.domain.com 
 dig domain.com
-  
+=================================================================================
+STRESS
+=================================================================================
+sudo apt-get update
+sudo apt install stress
+sudo stress --cpu 10 --timeout 200
+=================================================================================
